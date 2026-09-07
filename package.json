@@ -15,7 +15,7 @@
     "dev": "electron . --enable-logging",
     "test": "node --test tests/unit/*.cjs tests/integration/*.cjs tests/renderer/*.cjs",
     "vendor": "node scripts/vendor-renderer-deps.cjs",
-    "build": "electron-builder --linux",
+    "build": "electron-builder --linux --publish never",
     "rpm": "bash scripts/package-rpm.sh",
     "dist": "npm run vendor && npm run build && npm run rpm"
   },
