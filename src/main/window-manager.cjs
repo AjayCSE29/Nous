@@ -1,6 +1,8 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
 
+const WINDOW_ICON = path.join(__dirname, '..', '..', 'assets', 'icons', 'logo.png');
+
 let mainWindow;
 let companionWindow;
 
@@ -17,6 +19,7 @@ function createMain() {
     height: 820,
     minWidth: 960,
     minHeight: 620,
+    icon: WINDOW_ICON,
     backgroundColor: '#f8f8f6',
     title: 'Nous',
     titleBarStyle: 'hiddenInset',
@@ -36,6 +39,7 @@ function openCompanion(pinned = false) {
     height: 700,
     minWidth: 380,
     minHeight: 540,
+    icon: WINDOW_ICON,
     backgroundColor: '#f8f8f6',
     title: 'Nous Companion',
     alwaysOnTop: pinned,

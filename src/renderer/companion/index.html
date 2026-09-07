@@ -10,7 +10,7 @@
 </head>
 <body>
   <header>
-    <span class="brand"><img class="logo" src="../../assets/icons/logo.svg" alt=""> Nous</span>
+    <span class="brand"><img class="logo" src="../../../assets/icons/logo.svg" alt=""> Nous</span>
     <select id="models" aria-label="Model"></select>
     <button id="pin" aria-label="Always on top">⌁</button>
     <button aria-label="More options">•••</button>
@@ -33,12 +33,31 @@
     <button id="remove" aria-label="Remove context">×</button>
   </section>
   <div class="context-row">
-    <button id="add">＋ Add context</button>
-    <span id="using">Using current window</span>
+    <div class="context-picker">
+      <button id="add">＋ Add context</button>
+      <div id="context-menu" hidden role="menu" aria-label="Attach context">
+        <button data-kind="selection" role="menuitem">Paste selection…</button>
+        <button data-kind="window" role="menuitem">Current window</button>
+        <button data-kind="file" role="menuitem">Choose file…</button>
+      </div>
+    </div>
+    <span id="using">No context</span>
     <span class="local-badge">Local</span>
   </div>
+  <dialog id="select-dialog">
+    <form method="dialog">
+      <h2>Paste selection</h2>
+      <p>Nous reads only what you paste here, once, for this request.</p>
+      <textarea id="select-text" aria-label="Selected text" placeholder="Paste the text you want Nous to see…"></textarea>
+      <div class="dialog-actions">
+        <button value="cancel">Cancel</button>
+        <button value="default" id="select-confirm">Attach</button>
+      </div>
+    </form>
+  </dialog>
   <form id="composer">
     <textarea id="prompt" placeholder="Ask Nous about this…" rows="1"></textarea>
+    <button id="stop" aria-label="Stop generating" hidden>▪</button>
     <button aria-label="Send message">↑</button>
   </form>
   <script src="app.js"></script>

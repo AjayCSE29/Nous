@@ -11,7 +11,7 @@
 <body>
   <aside aria-label="Conversations">
     <div class="brand">
-      <img class="logo" src="../../assets/icons/logo.svg" alt=""> Nous
+      <img class="logo" src="../../../assets/icons/logo.svg" alt=""> Nous
     </div>
     <button id="new" class="new">＋ New chat <kbd>Ctrl N</kbd></button>
     <p class="label">Recent conversations</p>
@@ -35,7 +35,7 @@
       </div>
     </header>
     <section id="empty">
-      <img class="empty-logo" src="../../assets/icons/logo.svg" alt="">
+      <img class="empty-logo" src="../../../assets/icons/logo.svg" alt="">
       <h1>What can I help you explore?</h1>
       <p>Private conversations with your local models.</p>
       <div class="chips">
@@ -47,6 +47,7 @@
     <section id="messages" aria-live="polite" hidden></section>
     <form id="composer">
       <textarea id="prompt" placeholder="Message Nous…" rows="1"></textarea>
+      <button id="stop" aria-label="Stop generating" hidden>▪</button>
       <button aria-label="Send message">↑</button>
       <footer>
         <span>Local and private</span>
