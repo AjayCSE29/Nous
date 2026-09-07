@@ -21,8 +21,9 @@ npm run dev
 | `npm start` | Launch the app |
 | `npm run dev` | Launch with dev logging |
 | `npm test` | Run unit tests |
-| `npm run build` | Build Linux package |
-| `npm run dist` | Build rpm + AppImage |
+| `npm run build` | Build AppImage (via electron-builder) |
+| `npm run rpm` | Build RPM from the packed app |
+| `npm run dist` | Build both the AppImage and the RPM |
 
 ## Architecture
 

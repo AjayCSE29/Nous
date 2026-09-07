@@ -9,9 +9,6 @@ files:
   - package.json
 linux:
   target:
-    - rpm
     - AppImage
   category: Utility
   icon: assets/icons/logo.png
-rpm:
-  packageName: nous

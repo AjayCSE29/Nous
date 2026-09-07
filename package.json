@@ -5,15 +5,21 @@
   "main": "src/main/index.cjs",
   "productName": "Nous",
   "license": "MIT",
+  "author": {
+    "name": "Ajay",
+    "email": "ajay@192.168.1.7"
+  },
+  "homepage": "https://github.com/AjayCSE29/Nous",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
     "start": "electron .",
     "dev": "electron . --enable-logging",
-    "test": "node --test tests/unit/*.cjs tests/integration/*.cjs",
+    "test": "node --test tests/unit/*.cjs tests/integration/*.cjs tests/renderer/*.cjs",
     "build": "electron-builder --linux",
-    "dist": "electron-builder --linux rpm AppImage"
+    "rpm": "bash scripts/package-rpm.sh",
+    "dist": "npm run build && npm run rpm"
   },
   "devDependencies": {
     "electron": "^44.2.0",
