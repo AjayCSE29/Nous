@@ -1,9 +1,13 @@
 [Desktop Entry]
+Type=Application
+Version=1.5
 Name=Nous
-Comment=A private Fedora desktop client for local Ollama models
+GenericName=Chat Client
+Comment=A private desktop client for local Ollama models
 Exec=nous
 Icon=nous
 Terminal=false
-Type=Application
 Categories=Utility;
+Keywords=Ollama;Chat;LLM;Companion;AI;
 StartupNotify=true
+StartupWMClass=Nous

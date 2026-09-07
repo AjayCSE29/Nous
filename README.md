@@ -2,6 +2,26 @@
 
 A private, Fedora-first Electron desktop client for local Ollama models.
 
+## Install
+
+Download the latest `Nous-*.AppImage` or `nous-*.rpm` from the
+[releases](https://github.com/AjayCSE29/Nous/releases) page.
+
+```bash
+sudo dnf install ./nous-*.rpm   # Fedora (recommended)
+chmod +x ./Nous-*.AppImage      # any distro
+sudo dnf install -y fuse2       # required on Fedora to run AppImages
+./Nous-*.AppImage
+```
+
+## Privacy
+
+Nous is fully local: no accounts, no analytics, no telemetry, no cloud AI. All
+traffic stays between the app and the Ollama server you configure (default
+`http://127.0.0.1:11434`). Conversations, titles, and settings are stored only
+on your device, and Context attachments in the Companion window are used only
+for the single request you explicitly submit them with.
+
 ## Prerequisites
 
 - Node.js >= 22.12.0
@@ -54,4 +74,4 @@ tests/
 
 ## License
 
-MIT
+[MIT](LICENSE)
