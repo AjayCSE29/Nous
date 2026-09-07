@@ -11,7 +11,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --enable-logging",
-    "test": "node --test tests/unit/*.cjs",
+    "test": "node --test tests/unit/*.cjs tests/integration/*.cjs",
     "build": "electron-builder --linux",
     "dist": "electron-builder --linux rpm AppImage"
   },
