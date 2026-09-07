@@ -4,8 +4,8 @@ Release:        1%{?dist}
 Summary:        A private Fedora desktop client for local Ollama models
 License:        MIT
 URL:            https://github.com/AjayCSE29/Nous
-Vendor:         Ajay <ajay@192.168.1.7>
-Packager:       Ajay <ajay@192.168.1.7>
+Vendor:         Ajay
+Packager:       Ajay
 BuildArch:      x86_64
 
 Requires:       gtk3
