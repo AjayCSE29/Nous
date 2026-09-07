@@ -343,6 +343,14 @@ textarea {
   font-size: 17px;
 }
 
+#composer > button#stop {
+  right: 48px;
+  background: transparent;
+  color: #6b6b66;
+  border: 1px solid #d7d7d2;
+  font-size: 12px;
+}
+
 footer {
   position: absolute;
   bottom: 10px;
@@ -441,6 +449,27 @@ input {
   height: 38px;
   object-fit: contain;
   margin: auto;
+}
+
+.message.failed {
+  color: #6b6b66;
+}
+
+.error-note {
+  margin-top: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8a3428;
+}
+
+.error-note .retry {
+  margin-left: 8px;
+  padding: 4px 9px;
+  border: 1px solid #d7d7d2;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 11px;
+  color: #171717;
 }
 
 @media (prefers-reduced-motion: reduce) {

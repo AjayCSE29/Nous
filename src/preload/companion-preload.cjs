@@ -8,6 +8,7 @@ const C = {
   MODELS_LIST: 'models:list',
   SETTINGS_READ: 'settings:read',
   SETTINGS_UPDATE: 'settings:update',
+  CONVERSATIONS_LIST: 'conversations:list',
   CONVERSATIONS_CREATE: 'conversations:create',
   CONVERSATIONS_READ: 'conversations:read',
   CHAT_SEND: 'chat:send',
@@ -31,6 +32,7 @@ contextBridge.exposeInMainWorld('nous', {
     update: invoke(C.SETTINGS_UPDATE),
   },
   conversations: {
+    list: invoke(C.CONVERSATIONS_LIST),
     create: invoke(C.CONVERSATIONS_CREATE),
     read: invoke(C.CONVERSATIONS_READ),
   },

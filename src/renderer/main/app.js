@@ -2,6 +2,8 @@ const $ = (s) => document.querySelector(s);
 let current;
 let models = [];
 let streaming = false;
+let cancelling = false;
+let lastPrompt = '';
 
 const showMessages = (conversation) => {
   const box = $('#messages');
@@ -151,7 +153,9 @@ $('#composer').addEventListener('submit', async (e) => {
   const prompt = $('#prompt').value.trim();
   if (!prompt || streaming || !$('#models').value) return;
   if (!current) await newChat();
+  lastPrompt = prompt;
   streaming = true;
+  $('#stop').hidden = false;
   $('#prompt').value = '';
   add('user', prompt);
   const response = add('assistant', '');
@@ -165,15 +169,26 @@ $('#composer').addEventListener('submit', async (e) => {
   } catch {
   } finally {
     streaming = false;
+    $('#stop').hidden = true;
     response.classList.remove('working');
     refreshList();
   }
+});
+
+$('#stop').addEventListener('click', () => {
+  cancelling = true;
+  window.nous.chat.cancel();
 });
 
 $('#prompt').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     $('#composer').requestSubmit();
+  }
+  if (e.key === 'Escape' && streaming) {
+    e.preventDefault();
+    cancelling = true;
+    window.nous.chat.cancel();
   }
 });
 
@@ -197,6 +212,13 @@ $('#save').onclick = async () => {
 };
 $('#models').onchange = () => window.nous.settings.update({ lastModel: $('#models').value });
 
+window.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+    e.preventDefault();
+    newChat();
+  }
+});
+
 window.nous.onChunk(({ content }) => {
   const last = [...document.querySelectorAll('.message.assistant')].at(-1);
   if (last) {
@@ -209,8 +231,27 @@ window.nous.onChunk(({ content }) => {
 });
 
 window.nous.onError(({ message }) => {
+  cancelling = false;
   const last = [...document.querySelectorAll('.message.assistant')].at(-1);
-  if (last && !last.textContent) last.textContent = message;
+  if (!last) return;
+  if (message === 'Generation stopped.') {
+    if (!last.textContent) last.textContent = 'Stopped.';
+    return;
+  }
+  const note = document.createElement('div');
+  note.className = 'error-note';
+  note.textContent = message || 'Something went wrong while generating.';
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'retry';
+  retry.textContent = 'Retry';
+  retry.onclick = () => {
+    $('#prompt').value = lastPrompt;
+    $('#prompt').focus();
+  };
+  note.append(retry);
+  last.append(note);
+  last.classList.add('failed');
 });
 
 connect();

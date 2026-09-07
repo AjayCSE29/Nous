@@ -2,7 +2,9 @@ const $ = (s) => document.querySelector(s);
 let model = '',
   current,
   context,
-  streaming = false;
+  streaming = false,
+  cancelling = false,
+  lastPrompt = '';
 
 function render(el, text) {
   const p = String(text).split(/```([\w+-]*)\n?([\s\S]*?)```/g);
@@ -68,7 +70,13 @@ async function init() {
   }
   const s = await window.nous.settings.read();
   $('#pin').classList.toggle('pinned', s.companionAlwaysOnTop);
-  current = await window.nous.conversations.create(model);
+  const latest = (await window.nous.conversations.list())[0];
+  current =
+    (latest && (await window.nous.conversations.read(latest.id))) ||
+    (await window.nous.conversations.create(model));
+  if (current.messages?.length) {
+    current.messages.forEach((m) => add(m.role, m.content));
+  }
 }
 
 $('#models').onchange = () => (model = $('#models').value);
@@ -84,20 +92,54 @@ $('#pin').onclick = async () => {
   }
 };
 
-$('#add').onclick = async () => {
-  context = await window.nous.context.attach({
-    kind: 'window',
-    label: 'Current window',
-  });
+const kinds = {
+  selection: 'Pasted selection',
+  window: 'Current window',
+  file: 'Selected file',
+};
+
+async function attachContext(input) {
+  context = await window.nous.context.attach(input);
   if (context) {
     $('#context-label').textContent = context.label;
+    $('#using').textContent = context.label;
     $('#context').hidden = false;
   }
+}
+
+$('#add').onclick = () => {
+  $('#context-menu').hidden = !$('#context-menu').hidden;
+};
+
+document.addEventListener('click', (e) => {
+  if (!$('#context-menu').contains(e.target) && e.target !== $('#add')) {
+    $('#context-menu').hidden = true;
+  }
+});
+
+$('#context-menu').onclick = (e) => {
+  const kind = e.target.dataset?.kind;
+  if (!kind) return;
+  $('#context-menu').hidden = true;
+  if (kind === 'selection') {
+    $('#select-text').value = '';
+    $('#select-dialog').showModal();
+    $('#select-text').focus();
+    return;
+  }
+  attachContext({ kind, label: kinds[kind] });
+};
+
+$('#select-confirm').onclick = async () => {
+  const content = $('#select-text').value.trim();
+  if (!content) return;
+  await attachContext({ kind: 'selection', label: 'Pasted selection', content });
 };
 
 $('#remove').onclick = async () => {
   await window.nous.context.remove();
   context = null;
+  $('#using').textContent = 'No context';
   $('#context').hidden = true;
 };
 
@@ -112,7 +154,9 @@ $('#composer').onsubmit = async (e) => {
   e.preventDefault();
   const p = $('#prompt').value.trim();
   if (!p || streaming) return;
+  lastPrompt = p;
   streaming = true;
+  $('#stop').hidden = false;
   $('#prompt').value = '';
   add('user', p);
   const a = add('assistant', 'Working…');
@@ -127,14 +171,26 @@ $('#composer').onsubmit = async (e) => {
   } catch {
   } finally {
     streaming = false;
-    a.classList.remove('working');
+    const last = [...document.querySelectorAll('.msg.assistant')].at(-1);
+    if (last) last.classList.remove('working');
+    $('#stop').hidden = true;
   }
 };
+
+$('#stop').addEventListener('click', () => {
+  cancelling = true;
+  window.nous.chat.cancel();
+});
 
 $('#prompt').onkeydown = (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     $('#composer').requestSubmit();
+  }
+  if (e.key === 'Escape' && streaming) {
+    e.preventDefault();
+    cancelling = true;
+    window.nous.chat.cancel();
   }
 };
 
@@ -150,8 +206,28 @@ window.nous.onChunk(({ content }) => {
 });
 
 window.nous.onError(({ message }) => {
+  cancelling = false;
   const a = [...document.querySelectorAll('.msg.assistant')].at(-1);
-  if (a && a.textContent === 'Working…') a.textContent = message;
+  if (!a) return;
+  if (message === 'Generation stopped.') {
+    if (a.textContent === 'Working…') a.textContent = 'Stopped.';
+    return;
+  }
+  if (a.textContent === 'Working…') a.textContent = '';
+  const note = document.createElement('div');
+  note.className = 'error-note';
+  note.textContent = message || 'Something went wrong while generating.';
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'retry';
+  retry.textContent = 'Retry';
+  retry.onclick = () => {
+    $('#prompt').value = lastPrompt;
+    $('#prompt').focus();
+  };
+  note.append(retry);
+  a.append(note);
+  a.classList.add('failed');
 });
 
 init();
