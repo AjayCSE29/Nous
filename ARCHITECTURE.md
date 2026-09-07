@@ -35,7 +35,8 @@ Nous uses Electron's process separation to keep the user interface unprivileged.
 - Companion uses a dedicated preload and renderer bundle. It shares persisted conversations through the main-process store, never through renderer storage synchronization.
 - Always-on-top is controlled only by a specific `companion:set-always-on-top` IPC action and is reflected back to the UI.
 - Browser windows use `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`, and a restrictive content security policy.
-- CSP is enforced at two levels: an HTTP response header added via `session.defaultSession.webRequest.onHeadersReceived` (defense in depth) and a `<meta>` tag in each renderer HTML document. Both allow only same-origin scripts, styles, and images.
+- CSP is enforced at two levels: an HTTP response header added via `session.defaultSession.webRequest.onHeadersReceived` (defense in depth) and a `<meta>` tag in each renderer HTML document. Both allow only same-origin scripts and images; `style-src` adds `'unsafe-inline'` because KaTeX emits inline styles. Scripts stay `'self'` — there is no `unsafe-eval`, no remote font, style, image, or script.
+- Markdown, KaTeX, and DOMPurify are vendored into `src/renderer/vendor/` and shipped with the app, so rendering never depends on a network or a CDN.
 - Stores persist via write-to-temp-then-rename so a crash never leaves a truncated JSON file.
 
 ## IPC boundary
@@ -49,6 +50,12 @@ IPC channels are named in `src/shared/channels.cjs`. Payload schemas live beside
 | Conversations | `conversations:list`, `conversations:create`, `conversations:read`, `conversations:update`, `conversations:delete` |
 | Settings | `settings:read`, `settings:update`, `connection:test` |
 | Companion | `companion:open`, `companion:set-always-on-top`, `context:attach`, `context:remove` |
+| External navigation | `shell:open-external` — opens only validated `http`/`https` URLs in the system browser |
+
+## Rendering assistant content
+
+- Cleaned markdown, GFM, and KaTeX math are rendered from vendored libraries (`marked`, `DOMPurify`, `KaTeX`) executed entirely in the renderer; `src/renderer/shared/markdown.js` owns the pipeline (markdown → sanitize → math → code cards → link handling).
+- `pre` blocks become copyable code cards. Links only ever go through the allow-listed `shell:open-external` IPC; the renderer never navigates, and non-http(s) links are inert.
 
 ## Data model
 

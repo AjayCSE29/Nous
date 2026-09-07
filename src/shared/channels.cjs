@@ -18,4 +18,5 @@ module.exports = {
   COMPANION_PIN: 'companion:set-always-on-top',
   CONTEXT_ATTACH: 'context:attach',
   CONTEXT_REMOVE: 'context:remove',
+  SHELL_OPEN_EXTERNAL: 'shell:open-external',
 };

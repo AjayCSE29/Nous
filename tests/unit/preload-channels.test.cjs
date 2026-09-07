@@ -66,6 +66,7 @@ describe('preload channel consistency', () => {
       'COMPANION_PIN',
       'CONTEXT_ATTACH',
       'CONTEXT_REMOVE',
+      'SHELL_OPEN_EXTERNAL',
       'CHAT_CANCEL',
       'CHAT_SEND',
     ];

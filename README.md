@@ -51,6 +51,7 @@ Nous uses Electron's process separation to keep the UI unprivileged. The main pr
 
 - **Main window** — full chat client with sidebar, model picker, conversation history, and settings
 - **Companion** — compact always-on-top window with context attachments for quick questions alongside your work
+- **Formatted replies** — assistant output renders as markdown with headlines, lists, code cards, and KaTeX math, all processed locally by vendored libraries
 
 ### Key principles
 
@@ -65,7 +66,7 @@ Nous uses Electron's process separation to keep the UI unprivileged. The main pr
 src/
   main/          Electron main process (IPC, Ollama client, stores)
   preload/       Secure bridges for main and companion windows
-  renderer/      UI for main and companion windows
+  renderer/      UI for main and companion windows (vendored markdown/math libs in renderer/vendor)
   shared/        IPC channel constants
 tests/
   unit/          Store and client tests

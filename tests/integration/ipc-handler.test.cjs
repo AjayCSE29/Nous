@@ -24,6 +24,12 @@ const fakeElectron = {
       return null;
     },
   },
+  shell: {
+    async openExternal(url) {
+      opened.push(url);
+      return true;
+    },
+  },
 };
 
 const origLoad = Module._load;
@@ -40,6 +46,7 @@ const ConversationStore = require('../../src/main/conversation-store.cjs');
 
 const requests = [];
 const serverBodies = [];
+let opened = [];
 const waitFor = async (fn, timeout = 3000) => {
   const start = Date.now();
   while (!fn()) {
@@ -197,6 +204,19 @@ describe('IPC handlers against a mock Ollama server', () => {
       label: 'L'.repeat(200),
     });
     assert.equal(long.label.length, 120);
+  });
+
+  it('opens only http(s) URLs externally', async () => {
+    opened = [];
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'https://example.com/a'), true);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'http://example.com/x'), true);
+    assert.deepEqual(opened, ['https://example.com/a', 'http://example.com/x']);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'javascript:alert(1)'), false);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'ftp://example.com'), false);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'file:///etc/passwd'), false);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 42), false);
+    assert.equal(await invoke(C.SHELL_OPEN_EXTERNAL, event(), 'x'.repeat(2500)), false);
+    assert.equal(opened.length, 2);
   });
 
   it('supports conversation create, update, and delete via IPC', async () => {

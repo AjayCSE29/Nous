@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self';">
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self';">
   <title>Nous</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../vendor/katex/katex.min.css">
 </head>
 <body>
   <aside aria-label="Conversations">
@@ -71,6 +72,11 @@
       </div>
     </form>
   </dialog>
+  <script src="../vendor/marked.umd.js"></script>
+  <script src="../vendor/purify.min.js"></script>
+  <script src="../vendor/katex/katex.min.js"></script>
+  <script src="../vendor/katex/auto-render.min.js"></script>
+  <script src="../shared/markdown.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

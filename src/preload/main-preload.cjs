@@ -21,6 +21,7 @@ const C = {
   CHAT_COMPLETE: 'chat:complete',
   CHAT_ERROR: 'chat:error',
   COMPANION_OPEN: 'companion:open',
+  SHELL_OPEN_EXTERNAL: 'shell:open-external',
 };
 
 const invoke = (channel) => (...args) => ipcRenderer.invoke(channel, ...args);
@@ -48,6 +49,9 @@ contextBridge.exposeInMainWorld('nous', {
   },
   companion: {
     open: invoke(C.COMPANION_OPEN),
+  },
+  shell: {
+    openExternal: invoke(C.SHELL_OPEN_EXTERNAL),
   },
   onChunk(fn) {
     if (listeners.chunk) ipcRenderer.removeListener(C.CHAT_CHUNK, listeners.chunk);

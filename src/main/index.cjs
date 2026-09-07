@@ -4,7 +4,7 @@ const ConversationStore = require('./conversation-store.cjs');
 const windows = require('./window-manager.cjs');
 const { register } = require('./ipc.cjs');
 
-const CSP = "default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self';";
+const CSP = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self';";
 
 app.whenReady().then(() => {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {

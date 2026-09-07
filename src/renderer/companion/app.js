@@ -6,49 +6,17 @@ let model = '',
   cancelling = false,
   lastPrompt = '';
 
-function render(el, text) {
-  const p = String(text).split(/```([\w+-]*)\n?([\s\S]*?)```/g);
-  p.forEach((x, i) => {
-    if (i % 3 === 0) {
-      if (x) el.append(x);
-      return;
-    }
-    if (i % 3 === 1) return;
-    const c = document.createElement('section');
-    const h = document.createElement('header');
-    const l = document.createElement('span');
-    const b = document.createElement('button');
-    const pre = document.createElement('pre');
-    const co = document.createElement('code');
-    c.className = 'code-card';
-    l.textContent = p[i - 1] || 'code';
-    b.textContent = 'Copy';
-    b.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(x);
-        b.textContent = 'Copied';
-        setTimeout(() => (b.textContent = 'Copy'), 1200);
-      } catch {
-        b.textContent = 'Unavailable';
-      }
-    };
-    co.textContent = x.trim();
-    pre.append(co);
-    h.append(l, b);
-    c.append(h, pre);
-    el.append(c);
-  });
-}
-
 const add = (r, t = '') => {
   const e = document.createElement('article');
   e.className = `msg ${r}`;
-  r === 'assistant' ? render(e, t) : e.append(t);
+  r === 'assistant' ? renderMarkdown(e, t) : e.append(t);
   $('#chat').append(e);
   $('#chat').hidden = false;
   $('#welcome').hidden = true;
   return e;
 };
+
+installLinkHandling($('#chat'), (url) => window.nous.shell.openExternal(url));
 
 async function init() {
   try {
@@ -200,7 +168,7 @@ window.nous.onChunk(({ content }) => {
     const t = (a.dataset.raw || '') + content;
     a.dataset.raw = t;
     a.replaceChildren();
-    render(a, t);
+    renderMarkdown(a, t);
     $('#chat').scrollTop = $('#chat').scrollHeight;
   }
 });

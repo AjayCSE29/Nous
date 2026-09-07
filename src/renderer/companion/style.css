@@ -114,6 +114,113 @@ p {
 
 .msg.assistant {
   white-space: normal;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.msg.assistant > :first-child {
+  margin-top: 0;
+}
+
+.msg.assistant > :last-child {
+  margin-bottom: 0;
+}
+
+.msg.assistant p {
+  margin: 0 0 0.9em;
+}
+
+.msg.assistant h1,
+.msg.assistant h2,
+.msg.assistant h3,
+.msg.assistant h4 {
+  font-weight: 650;
+  line-height: 1.25;
+  margin: 1em 0 0.4em;
+}
+
+.msg.assistant h1 {
+  font-size: 1.35em;
+}
+
+.msg.assistant h2 {
+  font-size: 1.2em;
+}
+
+.msg.assistant h3 {
+  font-size: 1.1em;
+}
+
+.msg.assistant h4 {
+  font-size: 1em;
+}
+
+.msg.assistant ul,
+.msg.assistant ol {
+  margin: 0.5em 0 0.9em;
+  padding-left: 1.3em;
+}
+
+.msg.assistant li {
+  margin: 0.28em 0;
+}
+
+.msg.assistant li::marker {
+  color: #7b7b76;
+}
+
+.msg.assistant blockquote {
+  margin: 0.8em 0 1em;
+  padding: 0.1em 0 0.1em 0.9em;
+  border-left: 3px solid #deded9;
+  color: #585855;
+}
+
+.msg.assistant :not(pre) > code {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.86em;
+  background: #efefe9;
+  border: 1px solid #e2e2dd;
+  border-radius: 5px;
+  padding: 0.06em 0.3em;
+}
+
+.msg.assistant a {
+  color: #3a3a36;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.msg.assistant table {
+  border-collapse: collapse;
+  margin: 0.9em 0;
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  font-size: 0.92em;
+}
+
+.msg.assistant th,
+.msg.assistant td {
+  border: 1px solid #deded9;
+  padding: 5px 9px;
+  text-align: left;
+}
+
+.msg.assistant th {
+  background: #f1f1ee;
+  font-weight: 650;
+}
+
+.msg.assistant .katex-display {
+  margin: 1em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.msg.assistant .katex-display > .katex {
+  font-size: 1.12em;
 }
 
 .working {

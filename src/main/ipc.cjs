@@ -1,4 +1,4 @@
-const { ipcMain, dialog, BrowserWindow } = require('electron');
+const { ipcMain, dialog, BrowserWindow, shell } = require('electron');
 const C = require('../shared/channels.cjs');
 const ollama = require('./ollama-client.cjs');
 const { attach } = require('./context-coordinator.cjs');
@@ -106,6 +106,18 @@ function register({ settings, conversations, windows }) {
 
   ipcMain.handle(C.CONTEXT_REMOVE, () => {
     return true;
+  });
+
+  ipcMain.handle(C.SHELL_OPEN_EXTERNAL, async (_e, url) => {
+    if (typeof url !== 'string' || url.length > 2048) return false;
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return false;
+    }
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+    return shell.openExternal(parsed.toString());
   });
 
   ipcMain.handle(C.CHAT_CANCEL, (event) => {

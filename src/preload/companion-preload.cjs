@@ -19,6 +19,7 @@ const C = {
   COMPANION_PIN: 'companion:set-always-on-top',
   CONTEXT_ATTACH: 'context:attach',
   CONTEXT_REMOVE: 'context:remove',
+  SHELL_OPEN_EXTERNAL: 'shell:open-external',
 };
 
 const invoke = (channel) => (...args) => ipcRenderer.invoke(channel, ...args);
@@ -46,6 +47,9 @@ contextBridge.exposeInMainWorld('nous', {
   context: {
     attach: invoke(C.CONTEXT_ATTACH),
     remove: invoke(C.CONTEXT_REMOVE),
+  },
+  shell: {
+    openExternal: invoke(C.SHELL_OPEN_EXTERNAL),
   },
   onChunk(fn) {
     if (listeners.chunk) ipcRenderer.removeListener(C.CHAT_CHUNK, listeners.chunk);

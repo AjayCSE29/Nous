@@ -15,51 +15,18 @@ const showMessages = (conversation) => {
   requestAnimationFrame(() => (box.scrollTop = box.scrollHeight));
 };
 
-function formatAssistant(el, content) {
-  const parts = String(content).split(/```([\w+-]*)\n?([\s\S]*?)```/g);
-  parts.forEach((part, index) => {
-    if (index % 3 === 0) {
-      if (part) el.append(document.createTextNode(part));
-      return;
-    }
-    if (index % 3 === 1) return;
-    const card = document.createElement('section');
-    card.className = 'code-card';
-    const bar = document.createElement('header');
-    const label = document.createElement('span');
-    label.textContent = parts[index - 1] || 'code';
-    const copy = document.createElement('button');
-    copy.type = 'button';
-    copy.textContent = 'Copy';
-    copy.onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(part);
-        copy.textContent = 'Copied';
-        setTimeout(() => (copy.textContent = 'Copy'), 1400);
-      } catch {
-        copy.textContent = 'Unavailable';
-      }
-    };
-    const pre = document.createElement('pre');
-    const code = document.createElement('code');
-    code.textContent = part.trim();
-    pre.append(code);
-    bar.append(label, copy);
-    card.append(bar, pre);
-    el.append(card);
-  });
-}
-
 const add = (role, content = '') => {
   const el = document.createElement('article');
   el.className = `message ${role}`;
-  if (role === 'assistant') formatAssistant(el, content);
+  if (role === 'assistant') renderMarkdown(el, content);
   else el.textContent = content;
   $('#messages').append(el);
   $('#messages').hidden = false;
   $('#empty').hidden = true;
   return el;
 };
+
+installLinkHandling($('#messages'), (url) => window.nous.shell.openExternal(url));
 
 async function refreshList() {
   const items = await window.nous.conversations.list();
@@ -225,7 +192,7 @@ window.nous.onChunk(({ content }) => {
     const text = (last.dataset.raw || '') + content;
     last.dataset.raw = text;
     last.replaceChildren();
-    formatAssistant(last, text);
+    renderMarkdown(last, text);
     last.closest('#messages').scrollTop = last.closest('#messages').scrollHeight;
   }
 });

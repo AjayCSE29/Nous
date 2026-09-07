@@ -35,4 +35,20 @@ describe('companion renderer', () => {
     assert.match(app, /conversations\.list/);
     assert.match(app, /conversations\.read\(/);
   });
+
+  it('loads the renderer vendor stack before app.js', () => {
+    const scripts = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map((m) => m[1]);
+    const expected = [
+      '../vendor/marked.umd.js',
+      '../vendor/purify.min.js',
+      '../vendor/katex/katex.min.js',
+      '../vendor/katex/auto-render.min.js',
+      '../shared/markdown.js',
+      'app.js',
+    ];
+    assert.deepEqual(scripts, expected);
+    assert.match(html, /vendor\/katex\/katex\.min\.css/);
+    assert.match(html, /style-src 'self' 'unsafe-inline'/);
+    assert.match(app, /renderMarkdown\(/);
+  });
 });

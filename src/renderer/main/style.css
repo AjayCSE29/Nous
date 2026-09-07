@@ -261,6 +261,137 @@ h1 {
 .message.assistant {
   padding: 0 4px;
   white-space: normal;
+  font-size: 15.5px;
+  line-height: 1.7;
+  max-width: 92%;
+}
+
+.message.assistant > :first-child {
+  margin-top: 0;
+}
+
+.message.assistant > :last-child {
+  margin-bottom: 0;
+}
+
+.message.assistant p {
+  margin: 0 0 1em;
+}
+
+.message.assistant h1,
+.message.assistant h2,
+.message.assistant h3,
+.message.assistant h4 {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 1.25em 0 0.5em;
+}
+
+.message.assistant h1 {
+  font-size: 1.5em;
+}
+
+.message.assistant h2 {
+  font-size: 1.3em;
+}
+
+.message.assistant h3 {
+  font-size: 1.15em;
+}
+
+.message.assistant h4 {
+  font-size: 1.05em;
+}
+
+.message.assistant strong {
+  font-weight: 650;
+}
+
+.message.assistant ul,
+.message.assistant ol {
+  margin: 0.6em 0 1.1em;
+  padding-left: 1.45em;
+}
+
+.message.assistant li {
+  margin: 0.32em 0;
+  padding-left: 0.15em;
+}
+
+.message.assistant li::marker {
+  color: #7b7b76;
+}
+
+.message.assistant ul ul,
+.message.assistant ol ol,
+.message.assistant ul ol,
+.message.assistant ol ul {
+  margin: 0.4em 0 0.5em;
+}
+
+.message.assistant blockquote {
+  margin: 0.9em 0 1.1em;
+  padding: 0.1em 0 0.1em 1em;
+  border-left: 3px solid #dcdcd7;
+  color: #555;
+}
+
+.message.assistant :not(pre) > code {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.87em;
+  background: #efefe9;
+  border: 1px solid #e2e2dd;
+  border-radius: 5px;
+  padding: 0.08em 0.34em;
+}
+
+.message.assistant a {
+  color: #3a3a36;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.message.assistant a:hover {
+  color: #000;
+}
+
+.message.assistant hr {
+  border: 0;
+  border-top: 1px solid #dcdcd7;
+  margin: 1.3em 0;
+}
+
+.message.assistant table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  font-size: 0.94em;
+}
+
+.message.assistant th,
+.message.assistant td {
+  border: 1px solid #deded9;
+  padding: 6px 11px;
+  text-align: left;
+}
+
+.message.assistant th {
+  background: #f1f1ee;
+  font-weight: 650;
+}
+
+.message.assistant .katex-display {
+  margin: 1.1em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.message.assistant .katex-display > .katex {
+  font-size: 1.16em;
 }
 
 .working {
