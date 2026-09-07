@@ -1,0 +1,22 @@
+{
+  "name": "nous",
+  "version": "0.1.0",
+  "description": "A private Fedora desktop client for local Ollama models",
+  "main": "src/main/index.cjs",
+  "productName": "Nous",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "test": "node --test tests/unit/*.cjs",
+    "build": "electron-builder --linux",
+    "dist": "electron-builder --linux rpm AppImage"
+  },
+  "devDependencies": {
+    "electron": "^44.2.0",
+    "electron-builder": "^25.0.0"
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self';">
+  <title>Nous Companion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <span class="brand"><img class="logo" src="../../assets/icons/logo.svg" alt=""> Nous</span>
+    <select id="models" aria-label="Model"></select>
+    <button id="pin" aria-label="Always on top">⌁</button>
+    <button aria-label="More options">•••</button>
+  </header>
+  <main>
+    <section id="welcome">
+      <h1>How can I help?</h1>
+      <p>Ask Nous about what you're working on.</p>
+      <div>
+        <button>Summarize this</button>
+        <button>Explain this</button>
+        <button>Draft a reply</button>
+      </div>
+    </section>
+    <section id="chat" aria-live="polite" hidden></section>
+  </main>
+  <section id="context" hidden>
+    <small>Current context</small>
+    <strong id="context-label"></strong>
+    <button id="remove" aria-label="Remove context">×</button>
+  </section>
+  <div class="context-row">
+    <button id="add">＋ Add context</button>
+    <span id="using">Using current window</span>
+    <span class="local-badge">Local</span>
+  </div>
+  <form id="composer">
+    <textarea id="prompt" placeholder="Ask Nous about this…" rows="1"></textarea>
+    <button aria-label="Send message">↑</button>
+  </form>
+  <script src="app.js"></script>
+</body>
+</html>

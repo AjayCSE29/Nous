@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self';">
+  <title>Nous</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside aria-label="Conversations">
+    <div class="brand">
+      <img class="logo" src="../../assets/icons/logo.svg" alt=""> Nous
+    </div>
+    <button id="new" class="new">＋ New chat <kbd>Ctrl N</kbd></button>
+    <p class="label">Recent conversations</p>
+    <nav id="list" aria-label="Recent conversations"></nav>
+    <div class="sidefoot">
+      <span id="status" aria-live="polite"><span class="dot"></span> Checking Ollama…</span>
+      <button id="settings" aria-label="Connection settings">⚙</button>
+    </div>
+  </aside>
+  <main>
+    <header>
+      <div>
+        <select id="models" aria-label="Model">
+          <option>Loading models…</option>
+        </select>
+        <small id="model-info"></small>
+      </div>
+      <div>
+        <button id="companion" aria-label="Open Companion">◫ Companion</button>
+        <button id="clear" aria-label="New conversation">⌫</button>
+      </div>
+    </header>
+    <section id="empty">
+      <img class="empty-logo" src="../../assets/icons/logo.svg" alt="">
+      <h1>What can I help you explore?</h1>
+      <p>Private conversations with your local models.</p>
+      <div class="chips">
+        <button>Plan my day</button>
+        <button>Explain a concept</button>
+        <button>Improve my writing</button>
+      </div>
+    </section>
+    <section id="messages" aria-live="polite" hidden></section>
+    <form id="composer">
+      <textarea id="prompt" placeholder="Message Nous…" rows="1"></textarea>
+      <button aria-label="Send message">↑</button>
+      <footer>
+        <span>Local and private</span>
+        <span>Enter to send · Shift Enter for new line</span>
+      </footer>
+    </form>
+  </main>
+  <dialog id="dialog">
+    <form method="dialog">
+      <div class="dialog-head">
+        <h2>Connection settings</h2>
+        <button value="cancel">×</button>
+      </div>
+      <label>Ollama server address
+        <input id="host" type="url">
+      </label>
+      <p>Nous connects only to this local server.</p>
+      <div class="actions">
+        <button value="cancel">Cancel</button>
+        <button id="save" value="default">Save changes</button>
+      </div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>

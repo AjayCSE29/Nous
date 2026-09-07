@@ -1,0 +1,17 @@
+appId: com.nous.desktop
+productName: Nous
+directories:
+  output: dist
+  buildResources: assets
+files:
+  - src/**/*
+  - assets/**/*
+  - package.json
+linux:
+  target:
+    - rpm
+    - AppImage
+  category: Utility
+  icon: assets/icons/logo.png
+rpm:
+  packageName: nous
