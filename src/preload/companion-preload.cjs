@@ -1,5 +1,24 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const C = require('../../shared/channels.cjs');
+
+// Channel names are duplicated here because sandboxed preloads can only
+// require Electron's built-in modules. Keep this in sync with
+// src/shared/channels.cjs. A test (tests/unit/preload-channels.test.cjs)
+// verifies they match.
+const C = {
+  MODELS_LIST: 'models:list',
+  SETTINGS_READ: 'settings:read',
+  SETTINGS_UPDATE: 'settings:update',
+  CONVERSATIONS_CREATE: 'conversations:create',
+  CONVERSATIONS_READ: 'conversations:read',
+  CHAT_SEND: 'chat:send',
+  CHAT_CANCEL: 'chat:cancel',
+  CHAT_CHUNK: 'chat:chunk',
+  CHAT_COMPLETE: 'chat:complete',
+  CHAT_ERROR: 'chat:error',
+  COMPANION_PIN: 'companion:set-always-on-top',
+  CONTEXT_ATTACH: 'context:attach',
+  CONTEXT_REMOVE: 'context:remove',
+};
 
 const invoke = (channel) => (...args) => ipcRenderer.invoke(channel, ...args);
 

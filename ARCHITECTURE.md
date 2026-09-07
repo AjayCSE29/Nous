@@ -35,6 +35,8 @@ Nous uses Electron's process separation to keep the user interface unprivileged.
 - Companion uses a dedicated preload and renderer bundle. It shares persisted conversations through the main-process store, never through renderer storage synchronization.
 - Always-on-top is controlled only by a specific `companion:set-always-on-top` IPC action and is reflected back to the UI.
 - Browser windows use `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`, and a restrictive content security policy.
+- CSP is enforced at two levels: an HTTP response header added via `session.defaultSession.webRequest.onHeadersReceived` (defense in depth) and a `<meta>` tag in each renderer HTML document. Both allow only same-origin scripts, styles, and images.
+- Stores persist via write-to-temp-then-rename so a crash never leaves a truncated JSON file.
 
 ## IPC boundary
 
@@ -71,6 +73,7 @@ ContextRef { id, kind: selection|window|file, label, content?, createdAt }
 
 - Accept only `http`/`https` endpoints; the settings default is loopback and non-loopback endpoints require explicit user configuration.
 - Validate message, model, host, conversation ID, and context payload size/type at IPC entry.
+- `settings:update` accepts only allow-listed fields (`ollamaHost`, `lastModel`, `companionAlwaysOnTop`, `theme`) and rejects invalid types before persisting.
 - Never expose filesystem paths or full context content in logs.
 - Use a restrictive CSP with no remote scripts, fonts, or images.
 - Persist only the data necessary for local history; provide deletion at the conversation level.
